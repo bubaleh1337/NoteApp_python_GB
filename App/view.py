@@ -15,10 +15,10 @@ def print_message(message: str): # печать любого сообщения
 
 def print_notes(notes_list: list[dict[str, str]], error: str): # печать списка заметок 
 	if notes_list:
-		print('\n' + '=' * 71)
+		print('\n' + '=' * len(notes_list))
 		for i, note in enumerate(notes_list, 1):
-			print(f'{i:>3}. {note.get("title"):<20} | {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}\n\n {note.get("note"):<20}')
-			print('=' * 71 + '\n')
+			print(f'{i:>3}. {note.get("title")}\t | \t{note.get("date")}\n\n {note.get("note"):<20}')
+			print('=' * len(notes_list) + '\n')
 	else:
 			print_message(error)		
 
@@ -26,10 +26,15 @@ def input_note(message: str, cancel: str) -> dict[str, str]: # введение 
 	note = {}
 	print(message)
 	for key, value in text.new_note.items():
-		data = input(value)
-		if data:
-				note[key] = data
+		
+		if (key == "date"): 
+			note[value] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+			continue
 		else:
+			data = input(value)
+			if data:
+				note[key] = data
+			else:
 				print_message(cancel)
 	return note
 

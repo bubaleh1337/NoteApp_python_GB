@@ -1,4 +1,5 @@
 from contextlib import suppress
+from datetime import datetime
 
 notes_list: list[dict[str, str]] = []
 path = 'notes.txt'
@@ -9,8 +10,8 @@ def open_notes_list():
 		data = file.readlines() # 'Kate:7444654:comment'
 	for note in data:
 		note = note.strip().split(':') # .strip() - очищение начало и конец строки
-		notes_list.append({'title': note[0], 'note': note[1], 'comment': note[2]})
-
+		notes_list.append({'title': note[0], 'date': note[1], 'note': note[2]})
+# 'date': datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 def save_notes_list():
 	global notes_list, path
 	data = []
@@ -47,6 +48,9 @@ def change_notes_list(note: dict, index: int):
 	with suppress(Exception):
 		if len(note['title']) > 0:
 			notes_list[index-1]['title'] = note['title']
+	with suppress(Exception):
+		if len(note['date']) > 0:
+			notes_list[index-1]['date'] = note['date']			
 	with suppress(Exception):
 		if len(note['note']) > 0:
 			notes_list[index-1]['note'] = note['note']
