@@ -50,6 +50,3 @@ def change_notes_list(note: dict, index: int):
 	with suppress(Exception):
 		if len(note['note']) > 0:
 			notes_list[index-1]['note'] = note['note']
-	with suppress(Exception):
-		if len(note['comment']) > 0:
-			notes_list[index-1]['comment'] = note['comment']
