@@ -1,14 +1,15 @@
 class Notes:
 	@staticmethod
 	def from_dict(dict_note: dict):
-		return Notes(created_timestamp=dict_note["created_timestamp"],
+		return Notes(id=dict_note["id"],
+	       created_timestamp=dict_note["created_timestamp"],
 				 head=dict_note["head"],
 	       text=dict_note["text"],
 	       last_change_timestamp=dict_note["last_change_timestamp"])
 
-	def __init__(self, created_timestamp: str, head: str,
+	def __init__(self, id: int, created_timestamp: str, head: str,
               text: str, last_change_timestamp: str = None): # type: ignore
-		
+		self.__id: int = id
 		self.__created_timestamp: str = str(created_timestamp)
 		self.__head: str = head
 		self.__text: str = text
@@ -18,10 +19,13 @@ class Notes:
 			self.__lastchange_timestamp = str(last_change_timestamp)
 			
 	def __dict__(self) -> dict:
-		return {"created_timestamp": self.__created_timestamp,
+		return {"id": self.__id, 
+	  			  "created_timestamp": self.__created_timestamp,
 						"head": self.__head,
 						"text": self.__text,
 						"last_change_timestamp": self.__lastchange_timestamp}
+	def get_id(self) -> int:
+		return self.__id
 	
 	def get_created_timestamp(self) -> str:
 		return self.__created_timestamp

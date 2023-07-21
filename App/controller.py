@@ -33,14 +33,15 @@ class Controller:
 					self.view.print_notes(result, text.empty_search(word))
 				case 6: # Изменить заметку
 					notes_list = self.model.get_notes_list()
-					index = self.view.input_index(text.input_index, notes_list, text.load_error)
-					note = self.view.input_note(text.input_new_note, text.cancel_input)
-					result = self.model.change_notes_list(note, index)
+					id = self.view.input_index(notes_list, text.input_index, text.load_error)
+					field = self.view.input_note(text.cancel_input)
+					note = self.view.input_note(text.cancel_input)
+					result = self.model.edit_notes_list(id, field, note)
 					self.view.print_message(text.change_successful(note))
 				case 7: # Удалить заметку +
 					notes_list = self.model.get_notes_list()
-					index = self.view.input_index(text.index_del_note, notes_list, text.load_error)
-					name = self.model.del_note(index)
+					id = self.view.input_index(notes_list, text.index_del_note, text.load_error)
+					name = self.model.del_note(id)
 					self.view.print_message(text.del_note(name)) # type: ignore
 				case 8:
 					break

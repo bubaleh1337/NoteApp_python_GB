@@ -32,13 +32,12 @@ class View:
 		else:
 				self.print_message(error)		
 
-	def input_note(self, message: str, cancel: str): # введение заметки
-		note = {}
-		print(message)
-		for key, value in text.new_note.items():
+	def input_note(self, cancel: str): # введение заметки
+		note = ""
+		for value in text.new_note.items():
 			data = input(value)
 			if data:
-				note[key] = data
+				note = data
 			else:
 				self.print_message(cancel)
 		return note
@@ -46,7 +45,7 @@ class View:
 	def input_content(self, message: str) -> str:
 		return input(message)
 
-	def input_index(self, message: str, notes_list: list, error: str) -> int: # индексация
+	def input_index(self, notes_list: list, message: str, error: str) -> int: # индексация
 		self.print_notes(notes_list, error)
 		while True:
 			index = input(message)
@@ -56,3 +55,10 @@ class View:
 	def input_search(self, message: str) -> str: # поиск
 		self.print_message(message)
 		return input(message)
+	
+	def input_num(self, msg: str) -> str:
+		self.print_message(msg)
+		while True:
+			num = input(msg)
+			if num == "1" or num == "2":
+				return input(num)
