@@ -1,9 +1,9 @@
 from controller import Controller
-from model import Notes
+from model import Model
 from view import View
 
 view: View = View()
-model: Notes = Notes()
-controller: Controller = Controller(model=, view=view)
+model: Model = Model()
+controller: Controller = Controller(model=model, view=view)
 
 controller.start()

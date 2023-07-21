@@ -1,64 +1,20 @@
 from contextlib import suppress
 from datetime import datetime
-import json
+from json import load
 from time import time
+from Notes import Notes
+from os import mkdir
 
-class Notes:
- 
-	@staticmethod
-	def from_dict(dict_note: dict):
-		return Notes(created_timestamp=dict_note["created_timestamp"],
-               head=dict_note["head"],
-               text=dict_note["text"],
-               last_change_timestamp=dict_note["last_change_timestamp"])
-
-	def __init__(self, created_timestamp: float, head: str,
-              text: str, last_change_timestamp: float = None): # type: ignore
-		self.__created_timestamp: int = int(created_timestamp)
-		self.__head: str = head
-		self.__text: str = text
-		if last_change_timestamp is None:
-			self.__lastchange_timestamp: int = int(created_timestamp)
-		else:
-			self.__lastchange_timestamp = int(last_change_timestamp)
-
-	def __dict__(self) -> dict:
-		return {#"id": self.__id,
-	  				"created_timestamp": self.__created_timestamp,
-						"head": self.__head,
-						"text": self.__text,
-						"last_change_timestamp": self.__lastchange_timestamp}
-	
-	def get_created_timestamp(self) -> int:
-		return self.__created_timestamp
-	
-	def get_last_change_timestamp(self) -> int:
-		return self.__lastchange_timestamp
-	
-	def get_head(self) -> str:
-		return self.__head
-	
-	def get_text(self) -> str:
-		return self.__text
-	
-	def edit(self, field: str, new_content: str, change_timestamp: float) -> None:
-		if field == "1":
-			self.__head = new_content
-		elif field == "2":
-			self.__text = new_content
-		self.__lastchange_timestamp = int(change_timestamp)
-
-
+class Model:
 	__notes_list: list[dict[str, str]] = []
 	__path = 'notes.txt'
-	def open_notes_list(self, cancel):
-		try:
-			with open(self.__path, "r", encoding='utf-8') as read_file:
-				temp = json.loads(read_file.read())# 'Kate:7444654:comment'
-			for key, value in temp.items():
-				self.__notes_list[int(key)] = value
-		except:
-			cancel
+
+	def open_notes_list(self):
+		with open(self.__path, "r", encoding='UTF-8') as file:
+			data = file.readlines()
+			for note in data:
+				note = note.strip().split(':')
+				self.__notes_list.append({'title': note[0], 'date': note[1], 'note': note[2]})
 		return self.__notes_list
 # 'date': datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 	def save_notes_list(self):
@@ -72,8 +28,9 @@ class Notes:
 		return self.__notes_list
 
 	def add_new_note(self, head: str, text: str):
-		created_timestamp: float = time()
+		created_timestamp: str = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 		note: Notes = Notes(created_timestamp, head, text)
+		self.__notes_list.append({'title':note.get_head(), 'date':note.get_created_timestamp(), 'note':note.get_text()})
 		return note.get_head
 
 	def add_note(self, note: dict[str, str]):
@@ -93,7 +50,7 @@ class Notes:
 		return result
 
 	def change_notes_list(self, note: dict, index: int):
-	
+		
 		with suppress(Exception):
 			if len(note['title']) > 0:
 				self.__notes_list[index-1]['title'] = note['title']
@@ -103,3 +60,4 @@ class Notes:
 		with suppress(Exception):
 			if len(note['note']) > 0:
 				self.__notes_list[index-1]['note'] = note['note']
+		return note.get('title')

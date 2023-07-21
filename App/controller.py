@@ -1,11 +1,11 @@
 import text
 from view import View
-from model import Notes
+from model import Model, Notes
 
 #self.model = model.Notes()
 
 class Controller:
-	def __init__(self, model: Notes, view: View):
+	def __init__(self, model: Model, view: View):
 		self.model = model
 		self.view = view
 
@@ -13,21 +13,21 @@ class Controller:
 		while True:
 			choice = self.view.main_menu() # вывод меню и предоставление выбора
 			match choice:
-				case 1: # Открыть файл
-					self.model.open_notes_list(self.view.print_message(text.cancel))
-					# view.print_message(text.load_successful)
-				case 2: # Записать файл
+				case 1: # Открыть файл +
+					self.model.open_notes_list()#self.view.print_message(text.cancel))
+					self.view.print_message(text.load_successful)
+				case 2: # Записать файл +
 					self.model.save_notes_list()
 					self.view.print_message(text.save_successful)
-				case 3: # Показать заметки
+				case 3: # Показать заметки +
 					notes_list = self.model.get_notes_list()
 					self.view.print_notes(notes_list, text.load_error)
-				case 4: # Добавить заметку 
+				case 4: # Добавить заметку +
 					head_: str = self.view.input_content(text.content_head)
 					text_: str = self.view.input_content(text.content_text)
 					self.model.add_new_note(head_, text_)
-					self.view.print_message(text.new_note_successful(head)) # type: ignore
-				case 5: # Найти заметку
+					self.view.print_message(text.new_note_successful(head_)) # type: ignore
+				case 5: # Найти заметку +
 					word = self.view.input_search(text.input_search)
 					result = self.model.search_notes_list(word)
 					self.view.print_notes(result, text.empty_search(word))
@@ -37,7 +37,7 @@ class Controller:
 					note = self.view.input_note(text.input_new_note, text.cancel_input)
 					result = self.model.change_notes_list(note, index)
 					self.view.print_message(text.change_successful(note))
-				case 7: # Удалить заметку 
+				case 7: # Удалить заметку +
 					notes_list = self.model.get_notes_list()
 					index = self.view.input_index(text.index_del_note, notes_list, text.load_error)
 					name = self.model.del_note(index)
