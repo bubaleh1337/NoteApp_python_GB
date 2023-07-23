@@ -38,7 +38,7 @@ class Model:
 		return max_id
 	
 	def add_new_note(self, head: str, text: str):
-		id: int = self.get_max_id()
+		id: Notes.get_id
 		created_timestamp: str = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 		note: Notes = Notes(id, created_timestamp, head, text)
 		self.__notes_list.append({'id':note.get_id(),'title':note.get_head(), 'date':note.get_created_timestamp(), 'note':note.get_text()})
@@ -57,26 +57,26 @@ class Model:
 					break
 		return result
 	
-	def get_note_by_id(self, id: int) -> Notes:
-		try:
-			return self.__cache[id]
-		except KeyError:
-			return None # type: ignore
+	def get_note_by_id(self):
+		return Notes.get_id
 	
-	def edit_notes_list(self, id: int, field: str, change: str):
-		note: Notes = self.get_note_by_id(id)
-		note.edit(field=field, new_content=change, change_timestamp=datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
-		self.save_cache()
+	def edit_notes_list(self, index: int, field: str, change: str, cancel: str):
+		id = self.get_note_by_id()
+		note = Notes.edit
+		if (id == index):
+			note.edit(field=field, new_content=change, change_timestamp=datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
+		else: 
+			cancel
 
 		with suppress(Exception):
 			if len(note.get_head()) > 0:
-				self.__notes_list[id-1]['title'] = note.get_head()
+				self.__notes_list[index-1]['title'] = note.get_head()
 		with suppress(Exception):
 			if len(note.get_created_timestamp()) > 0:
-				self.__notes_list[id-1]['date'] = note.get_created_timestamp()			
+				self.__notes_list[index-1]['date'] = note.get_created_timestamp()			
 		with suppress(Exception):
 			if len(note.get_text()) > 0:
-				self.__notes_list[id-1]['note'] = note.get_text()
+				self.__notes_list[index-1]['note'] = note.get_text()
 		return note.get_head()
 	
 	def save_cache(self) -> int:

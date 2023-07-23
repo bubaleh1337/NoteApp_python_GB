@@ -1,3 +1,5 @@
+import uuid
+
 class Notes:
 	@staticmethod
 	def from_dict(dict_note: dict):
@@ -7,9 +9,9 @@ class Notes:
 	       text=dict_note["text"],
 	       last_change_timestamp=dict_note["last_change_timestamp"])
 
-	def __init__(self, id: int, created_timestamp: str, head: str,
+	def __init__(self, id: str, created_timestamp: str, head: str,
               text: str, last_change_timestamp: str = None): # type: ignore
-		self.__id: int = id
+		self.__id: str = str(uuid.uuid1())[0:3]
 		self.__created_timestamp: str = str(created_timestamp)
 		self.__head: str = head
 		self.__text: str = text
@@ -24,7 +26,7 @@ class Notes:
 						"head": self.__head,
 						"text": self.__text,
 						"last_change_timestamp": self.__lastchange_timestamp}
-	def get_id(self) -> int:
+	def get_id(self) -> str:
 		return self.__id
 	
 	def get_created_timestamp(self) -> str:
