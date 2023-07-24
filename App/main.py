@@ -1,9 +1,4 @@
-from controller import Controller
-from model import Model
-from view import View
+import controller
 
-view: View = View()
-model: Model = Model()
-controller: Controller = Controller(model=model, view=view)
-
-controller.start()
+if __name__ == '__main__':
+  controller.start()
